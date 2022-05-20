@@ -1,0 +1,40 @@
+---  
+
+- hosts: all
+  become: true
+  tasks:
+  - name: install update (Ubuntu)
+    apt: 
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu" 
+
+
+     
+  - name: install apache2 package
+    apt: 
+      name: 
+        - apache2
+        
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu" 
+ 
+       
+
+- hosts: trung 
+  become: true
+  tasks:
+  - name: install update (Ubuntu)
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+  - name: install apache2 package
+    apt:
+      name:
+        - apache2
+      state:
+      update_cache: yes
+
+ 
