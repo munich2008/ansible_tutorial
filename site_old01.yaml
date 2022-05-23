@@ -22,11 +22,19 @@
  
        
 
-  - name: copy default html file for site
-    copy:
-      src: default_site.html
-      dest: /var/www/html/index.html
-      owner: root
-      group: root
-      mode: 0644
-        
+- hosts: trung 
+  become: true
+  tasks:
+  - name: install update (Ubuntu)
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+  - name: install apache2 package
+    apt:
+      name:
+        - apache2
+      state:
+      update_cache: yes
+
+ 
