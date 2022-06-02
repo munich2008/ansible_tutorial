@@ -1,0 +1,57 @@
+---  
+
+- hosts: all
+  become: true
+  tasks:
+  - name: install update (Ubuntu)
+    apt: 
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu" 
+  
+- hosts: all 
+  become: true 
+  tasks:
+
+  - name: create trung user
+    tags: always
+    user:
+      name: trung
+      groups: root 
+  - name: add ssh key for trung
+    tags: always
+    authorized_key: 
+    user: trung
+    key: "
+
+
+
+     
+  - name: install apache2 package
+    apt: 
+      name: 
+        - apache2
+        
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu" 
+ 
+       
+
+  - name: copy default html file for site
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: install unzip
+    package: 
+      name: unzip          
+   
+  - name: Restart Apache
+    service: 
+      name: apache2
+      state: restarted
+    when: ansible_distribution == "Ubuntu"

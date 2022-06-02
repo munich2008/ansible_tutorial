@@ -1,0 +1,6 @@
+---
+  - name: add ssh key for trung    
+    tags: always    
+    authorized_key:      
+    user: trung  
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGYVA5PFJZl1mdhvoRV64CQ8P02w3LxEV2d7qi6MyHHW dqt default"

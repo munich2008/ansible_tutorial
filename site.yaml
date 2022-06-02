@@ -2,64 +2,39 @@
 
 - hosts: all
   become: true
-  tasks:
-  - name: install update (Ubuntu)
-    apt: 
-      upgrade: dist
-      update_cache: yes
-    when: ansible_distribution == "Ubuntu" 
+  pre_tasks:
   
-- hosts: all 
-  become: true 
-  tasks:
-
-  - name: create trung user
+  - name: install update (Ubuntu)
     tags: always
-    user:
-      name: trung
-      groups: root 
-
-  - name: add ssh key for trung
-    tags: always
-    authorized_key: 
-      user: trung
-      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGYVA5PFJZl1mdhvoRV64CQ8P02w3LxEV2d7qi6MyHHW dqt default"
-
-  - name: add sudoers file for trung
-    tags: always
-    copy:
-      src: sudoer_trung
-      dest: /etc/sudoers.d/trung
-      owner: root
-      group: root
-      mode: 0440
-
-     
-  - name: install apache2 package
     apt: 
-      name: 
-        - apache2
-        
-      state: latest
-      update_cache: yes
+     update_cache: yes
     when: ansible_distribution == "Ubuntu" 
+
+  
+- hosts: workstations
+  become: true
+  roles: 
+    - workstations
+
+- hosts: web_servers
+  become: true
+  roles: 
+    - web_servers
+
+- hosts: db_servers
+  become: true 
+  roles: 
+    - db_servers
+
+
+- hosts: file_servers
+  become: true 
+  roles: 
+    - file_servers
+
+
+
+
  
-       
 
-  - name: copy default html file for site
-    copy:
-      src: default_site.html
-      dest: /var/www/html/index.html
-      owner: root
-      group: root
-      mode: 0644
-
-  - name: install unzip
-    package: 
-      name: unzip          
-   
-  - name: Restart Apache
-    service: 
-      name: apache2
-      state: restarted
-    when: ansible_distribution == "Ubuntu"
+    
